@@ -30,8 +30,8 @@ public class DataAreaTypeController {
 	@Autowired
 	private DataAreaTypeService service;
 
-	@RequestMapping(value = "/listDataByParam", method = RequestMethod.GET)
-	public String listDataByParam(String areaName) {
+	@RequestMapping(value = "/listDataByGet", method = RequestMethod.GET)
+	public String listDataByGet(String areaName) {
 		String methodName = Thread.currentThread().getStackTrace()[1]
 				.getMethodName();
 		LOG.info("Enter Method {}, param [areaName] is {}", methodName,
@@ -49,9 +49,22 @@ public class DataAreaTypeController {
 		return ResponseUtil.success(list);
 	}
 
-	@RequestMapping(value = "/aaa", method = RequestMethod.GET)
-	public String aaa() {
-		System.out.println("11111");
-		return "111";
+	@RequestMapping(value = "/listDataByPost", method = RequestMethod.POST)
+	public String listDataByPost(String areaName) {
+		String methodName = Thread.currentThread().getStackTrace()[1]
+				.getMethodName();
+		LOG.info("Enter Method {}, param [areaName] is {}", methodName,
+				areaName);
+		List<DataAreaType> list = null;
+		try {
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("areaName", areaName);
+			list = service.listDataByParam(param);
+		} catch (Exception e) {
+			LOG.error("Handle Method {} error", methodName, e);
+			return ResponseUtil.fail(e.getMessage());
+		}
+		LOG.info("Exit Method {} success.", methodName);
+		return ResponseUtil.success(list);
 	}
 }
